@@ -1,0 +1,11 @@
+{
+  "lock": false,
+  "tasks": {
+    "build": "deno run --allow-write --allow-env --allow-net build.tsx",
+    "serve": "deno run -A serve.ts"
+  },
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h"
+  }
+}
