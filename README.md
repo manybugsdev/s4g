@@ -10,10 +10,8 @@ For development.
 import { dev } from "https://deno.land/x/s4g/mod.ts";
 
 await dev({
-  routes: {
-    "index.html": <MyHomePage />,
-    "main.css": await Deno.readTextFile("main.css"),
-  },
+  "index.html": <MyHomePage />,
+  "main.css": await Deno.readTextFile("main.css"),
 });
 ```
 
@@ -23,10 +21,9 @@ For production.
 import { generate } from "https://deno.land/x/s4g/mod.ts";
 
 await generate({
-  routes: {
-    "index.html": <MyHomePage />,
-    "main.css": await Deno.readTextFile("main.css"),
-  },
-  basePath: "pub",
+  "index.html": <MyHomePage />,
+  "main.css": await Deno.readTextFile("main.css"),
 });
 ```
+
+`pub` directory was created.
