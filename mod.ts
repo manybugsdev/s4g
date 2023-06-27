@@ -1,24 +1,27 @@
-import { isValidElement, VNode } from "https://esm.sh/preact@10.15.1";
-import render from "https://esm.sh/preact-render-to-string@6.1.0";
+import { serve } from "https://deno.land/std@0.192.0/http/server.ts";
+import { serveDir } from "https://deno.land/std@0.192.0/http/file_server.ts";
 
 export type Route = {
-  [key: string]: string | VNode | Route;
+  [key: string]: string | Route;
 };
 
-export async function generate(routes: Route, basePath = "pub") {
-  await Deno.mkdir(basePath, { recursive: true });
-  const keys = Object.keys(routes);
+export async function generate(route: Route, basePath = "pub") {
+  let bp = basePath;
+  bp = bp.endsWith("/") ? bp : (bp + "/");
+  await Deno.mkdir(bp, { recursive: true });
+  const keys = Object.keys(route);
   for (const key of keys) {
-    const value = routes[key];
-    const path = basePath + "/" + key;
+    const value = route[key];
+    const p = bp + key;
     if (typeof value === "string") {
-      await Deno.writeTextFile(path, value);
+      await Deno.writeTextFile(p, value);
       continue;
     }
-    if (isValidElement(value)) {
-      await Deno.writeTextFile(path, render(value));
-      continue;
-    }
-    await generate(value, path);
+    await generate(value, p);
   }
+}
+
+export async function dev(route: Route, basePath = "pub") {
+  await generate(route, basePath);
+  await serve((req) => serveDir(req, { fsRoot: basePath }));
 }

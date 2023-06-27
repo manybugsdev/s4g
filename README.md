@@ -10,8 +10,11 @@ For development.
 import { dev } from "https://deno.land/x/s4g/mod.ts";
 
 await dev({
-  "index.html": <MyHomePage />,
-  "main.css": await Deno.readTextFile("main.css"),
+  "index.html": render(<MyHomePage />),
+  "static": {
+    "main.css": await Deno.readTextFile("main.css"),
+    "main.js": "console.log('s4g')",
+  },
 });
 ```
 
@@ -21,8 +24,11 @@ For production.
 import { generate } from "https://deno.land/x/s4g/mod.ts";
 
 await generate({
-  "index.html": <MyHomePage />,
-  "main.css": await Deno.readTextFile("main.css"),
+  "index.html": render(<MyHomePage />),
+  "static": {
+    "main.css": await Deno.readTextFile("main.css"),
+    "main.js": "console.log('s4g')",
+  },
 });
 ```
 
